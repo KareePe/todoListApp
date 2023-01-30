@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Button, Text, TextInput } from 'react-native-paper';
-import { Modal, StyleSheet, View, ScrollView, SafeAreaView } from "react-native";
+import { Modal, StyleSheet, View, ScrollView, SafeAreaView, Alert, TouchableWithoutFeedback } from "react-native";
+import { theme } from "../core/theme";
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import DatePicker from 'react-native-modern-datepicker';
 import 'moment';
 import 'moment/locale/th';  // language must match config
@@ -15,6 +17,7 @@ export default ButtonAddTask = () => {
     const hideModal = () => {
         setLoading(false)
         setModalVisible(false)
+        setText('')
     }
     const containerStyle = { backgroundColor: 'white', padding: 20 }
 
@@ -34,6 +37,14 @@ export default ButtonAddTask = () => {
         if (topic.value === '') {
             setError(true)
         }
+        Alert.alert('Alert Title', 'My Alert Msg', [
+            {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+            },
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ]);
         console.log(selectedDate)
         console.log(topic.value, 'TOPIC')
     }
@@ -43,21 +54,33 @@ export default ButtonAddTask = () => {
             <Modal
                 visible={modalVisible}
                 onDismiss={hideModal}
+                onRequestClose={hideModal}
                 contentContainerStyle={containerStyle}
                 presentationStyle='pageSheet'
                 animationType='slide'
             >
                 <SafeAreaView>
+                    {/* <View style={{ flex: 1 }}>
+                        <TouchableWithoutFeedback
+                            onPressOut={(e) => {
+                                if (e.nativeEvent.locationY > 50) {
+                                    setModalVisible(false)
+                                }
+                            }}
+                        >
+                            <View>
+                                <AntDesign name="ellipsis1" size={24} color="black" />
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View> */}
+
 
                     <Button onPress={hideModal} style={styles.buttonCloseModal}>
-                        <View style={styles.btnModalClose}>
-                            <Ionicons name="ios-close" size={24} color="#444c62" />
-                        </View>
+                        <View style={styles.btnModalClose}></View>
                     </Button>
 
 
                     <View style={styles.modalWrap}>
-
                         <Text variant="headlineMedium" style={styles.text}>บันทึกงาน</Text>
                         <ScrollView>
                             <DatePicker
@@ -66,7 +89,7 @@ export default ButtonAddTask = () => {
                                     textHeaderColor: '#444c62',
                                     textDefaultColor: '#444c62',
                                     selectedTextColor: '#fff',
-                                    mainColor: '#717ffe',
+                                    mainColor: theme.colors.primary,
                                     textSecondaryColor: '#444c62',
                                     borderColor: 'rgba(122, 146, 165, 0.1)',
                                 }}
@@ -81,7 +104,8 @@ export default ButtonAddTask = () => {
                             <TextInput
                                 mode="outlined"
                                 label="หัวข้องาน"
-
+                                outlineColor="#f3f3f8"
+                                textColor={theme.colors.text}
                                 placeholder="กรอกหัวข้องานที่จะทำ"
                                 value={topic.value}
                                 onChangeText={(text) => setText({ value: text, error: '' })}
@@ -91,19 +115,21 @@ export default ButtonAddTask = () => {
                             />
                             <TextInput
                                 mode="outlined"
-                                label="หัวข้องาน"
+                                label="รายละเอียด"
+                                outlineColor="#f3f3f8"
+                                textColor={theme.colors.text}
                                 multiline
                                 placeholder="กรอกหัวข้องานที่จะทำ"
                                 value={topic.value}
                                 onChangeText={(text) => setText({ value: text, error: '' })}
-                                style={[{ height: 150 }, styles.input]}
+                                style={[{ height: 50 }, styles.input]}
                                 returnKeyType="next"
                                 error={error}
                             />
 
                             <Button
                                 onPress={fn_setValue}
-                                mode="outlined"
+                                mode="contained"
                                 loading={loading}
                                 style={styles.btnSubmit}
                             >
@@ -134,12 +160,12 @@ const styles = StyleSheet.create({
     button: {
         height: 70,
         width: 70,
-        borderRadius: 5,
-        backgroundColor: '#717ffe',
+        borderRadius: 25,
+        backgroundColor: theme.colors.primary,
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#717ffe',
-        shadowOpacity: 0.5,
+        shadowColor: theme.colors.primary,
+        shadowOpacity: 1,
         elevation: 10,
         shadowRadius: 5,
         shadowOffset: { width: 2, height: 5 },
@@ -150,27 +176,38 @@ const styles = StyleSheet.create({
     },
     buttonCloseModal: {
         width: '100%',
-        height: 50,
+        height: 40,
         right: 0,
         zIndex: 1,
-        alignItems: 'flex-end',
-        justifyContent: 'flex-end'
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    btnModalClose:{
+        width:50,
+        height:5,
+        backgroundColor:'#000',
+        borderRadius:50
     },
     text: {
         fontFamily: 'Kanit-Regular'
     },
     input: {
-        marginTop: 20
+        marginTop: 20,
+        borderColor: '#f3f3f8',
+        backgroundColor: '#fff',
+        fontFamily: 'Kanit-Regular'
     },
     btnSubmit: {
         width: '100%',
         height: 50,
-        backgroundColor: '#717ffe',
+        backgroundColor: theme.colors.primary,
         color: '#fff',
-        borderRadius: 5,
+        borderRadius: 15,
         marginVertical: 10,
         paddingVertical: 2,
-        
+        borderColor: '#fff',
+        marginTop: 20
+
     },
     btnText: {
         color: '#fff',

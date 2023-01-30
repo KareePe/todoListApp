@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 
 export default TaskItem = (props) => {
@@ -8,12 +8,14 @@ export default TaskItem = (props) => {
             <View style={styles.indexContainer}>
                 <Text style={styles.index}>{props.index}</Text>
             </View>
-            <View style={styles.taskContainer}>
+            <TouchableOpacity
+                onLongPress={() => props.updateTask()}
+                style={styles.taskContainer}>
                 <Text style={styles.task}>{props.task}</Text>
                 <TouchableOpacity onPress={() => props.deleteTask()}>
                     <MaterialIcons style={styles.delete} name="delete" size={18} color='#fff' />
                 </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
         </View>
     );
 }

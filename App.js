@@ -63,7 +63,7 @@ export default function App() {
             <CalendarStrip
               scrollable
               calendarAnimation={{ type: 'sequence', duration: 30 }}
-              daySelectionAnimation={{ type: 'background', duration: 200, borderWidth: 0, highlightColor: theme.colors.primary, borderRadius: 25 }}
+              daySelectionAnimation={{ type: 'background', duration: 200, borderWidth: 0, highlightColor: theme.colors.primary, borderRadius: 15 }}
               style={{ height: 100, fontSize: 20 }}
               calendarColor={'#fff'}
               highlightDateNumberStyle={{ color: '#fff' }}
